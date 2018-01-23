@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    navigation-levels: 2
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+
+  datasource:
+    url: jdbc:h2:mem:ngel_data_inttest;Mode=MYSQL

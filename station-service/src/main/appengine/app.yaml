@@ -1,0 +1,14 @@
+runtime: java
+env: flex
+
+resources:
+  memory_gb: 4.0
+
+handlers:
+- url: /.*
+  script: this field is required, but ignored
+
+network:
+  forwarded_ports:
+    - 7001
+    - 7001/tcp

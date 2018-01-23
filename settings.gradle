@@ -1,0 +1,4 @@
+rootProject.name = 'ngel-station-service'
+include 'station-common'
+include 'station-core'
+include 'station-service'

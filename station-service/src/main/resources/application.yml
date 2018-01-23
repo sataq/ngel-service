@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+management:
+  port: 8081
+  context_path: /management
+  security:
+    enabled: false
+
+spring:
+
+  application:
+    name: NgelStationService
+
+  jpa:
+    navigation-levels: 2
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+  datasource:
+#    url: jdbc:mysql://35.224.34.200/ngel_stations_records?verifyServerCertificate=false&useSSL=true
+    url: jdbc:mysql://google/ngel_stations_records?cloudSqlInstance=aod-pm:us-central1:aod-pm-mysql57-instance&socketFactory=com.google.cloud.sql.mysql.SocketFactory&verifyServerCertificate=false&useSSL=true
+    username: root
+    password: a0dpms@tQu3
+    driver-class-name: com.mysql.jdbc.Driver
+
+  profiles:
+    # Change this to oauth2 when using oauth
+    active:
+
+info:
+  app:
+    name: NgelStationService
+    description: Ngel Station Service
+
+flyway:
+  enabled: false
+
+cors:
+  allowed:
+    origins: http://localhost:8070
