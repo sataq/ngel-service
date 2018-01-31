@@ -66,11 +66,19 @@ public class DefaultStationService implements StationService {
         }
         Station.StationBuilder builder = Station.builder();
         builder.ngelId(csvRecord.get(0)).station(csvRecord.get(1)).city(csvRecord.get(2)).country(csvRecord.get(3))
-                .latitude(Double.parseDouble(csvRecord.get(4))).longitude(Double.parseDouble(csvRecord.get(5)));
+                .latitude(getDouble(csvRecord.get(4))).longitude(getDouble(csvRecord.get(5)));
         stationRepository.save(builder.build());
     }
 
     int getTotalPages(Long total) {
         return (total.intValue() / StationRepository.PAGE_SIZE) + ((total.intValue() % StationRepository.PAGE_SIZE) > 0 ? 1 : 0);
+    }
+
+    private Double getDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            return -1.0;
+        }
     }
 }

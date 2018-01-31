@@ -37,7 +37,7 @@ public class UploadDailyDataResource {
     public void readCSVFile() throws Exception {
         Reader in = null;
         try {
-            URL url = UploadDailyDataResource.class.getResource("/data/2016.tau.pm.1d.csv");
+            URL url = UploadDailyDataResource.class.getResource("/data/DAILY_PM_TAU.csv");
             in = new InputStreamReader(new FileInputStream(new File(url.toURI())), "UTF-8");
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
             int i = 0;

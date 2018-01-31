@@ -156,6 +156,10 @@ subprojects {
     }
 
     sourceSets {
+        jar {
+            exclude "**/data/**"
+        }
+
         intTest {
             compileClasspath += main.output + test.output
             runtimeClasspath += main.output + test.output

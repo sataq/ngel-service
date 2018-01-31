@@ -23,10 +23,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
   datasource:
-#    url: jdbc:mysql://35.224.34.200/ngel_stations_records?verifyServerCertificate=false&useSSL=true
+#    url: jdbc:mysql://localhost:3306/ngel_station_records?verifyServerCertificate=false&useSSL=true
     url: jdbc:mysql://google/ngel_stations_records?cloudSqlInstance=aod-pm:us-central1:aod-pm-mysql57-instance&socketFactory=com.google.cloud.sql.mysql.SocketFactory&verifyServerCertificate=false&useSSL=true
     username: root
     password: a0dpms@tQu3
+#    password:
     driver-class-name: com.mysql.jdbc.Driver
 
   profiles:
@@ -43,4 +44,4 @@ flyway:
 
 cors:
   allowed:
-    origins: http://localhost:8070
+    origins:
