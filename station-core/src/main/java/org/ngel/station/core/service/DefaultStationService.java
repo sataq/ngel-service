@@ -1,6 +1,5 @@
 package org.ngel.station.core.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.csv.CSVRecord;
@@ -29,12 +28,7 @@ public class DefaultStationService implements StationService {
 
     @Override
     public List<StationRepresentation> getStations() {
-        Long totalStations = stationRepository.totalStations();
-        int totalPages = getTotalPages(totalStations);
-        List<Station> stations = new ArrayList<>();
-        for (int i = 1; i <= totalPages; i++) {
-            stations.addAll(stationRepository.findByPage(i));
-        }
+        List<Station> stations = stationRepository.findAllOAPMStations();
         return stationTransformer.transform(stations);
     }
 

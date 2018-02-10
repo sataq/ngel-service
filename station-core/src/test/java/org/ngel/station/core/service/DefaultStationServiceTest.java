@@ -3,7 +3,6 @@ package org.ngel.station.core.service;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +44,7 @@ public class DefaultStationServiceTest {
     @Test
     public void getStations() throws Exception {
         when(stationRepository.totalStations()).thenReturn(2L);
-        when(stationRepository.findByPage(anyInt())).thenReturn(Collections.singletonList(TestConstants.getStation()));
+        when(stationRepository.findAllOAPMStations()).thenReturn(Collections.singletonList(TestConstants.getStation()));
         List<StationRepresentation> stations = stationService.getStations();
         assertThat(stations, hasSize(1));
     }
@@ -53,7 +52,7 @@ public class DefaultStationServiceTest {
     @Test
     public void getStationsWithPm25Mean() throws Exception {
         when(stationRepository.totalStations()).thenReturn(2L);
-        when(stationRepository.findByPage(anyInt())).thenReturn(Collections.singletonList(TestConstants.getStation()));
+        when(stationRepository.findAllOAPMStations()).thenReturn(Collections.singletonList(TestConstants.getStation()));
         when(stationDailyDataService.getLatestPm25Mean(anyString())).thenReturn(TestConstants.PM25_MEAN);
         List<StationRepresentation> stations = stationService.getStationsWithPm25Mean();
         assertThat(stations, hasSize(1));

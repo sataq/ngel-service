@@ -11,7 +11,7 @@ public interface StationRepository {
 
     Long totalStations();
 
-    List<Station> findByPage(int page);
+    List<Station> findAllOAPMStations();
 
     Station findByNgelId(String ngelId);
 

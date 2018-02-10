@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class StationRepositoryIntTest extends SpringTestContextInitializer {
 
-    private static final String NGEL_ID1 = "ngelId1";
-    private static final String NGEL_ID2 = "ngelId2";
+    private static final String NGEL_ID1 = "ngel_OAPM_Id1";
+    private static final String NGEL_ID2 = "ngel_OAP_Id2";
     private static final String STATION_NAME1 = "station1";
     private static final String STATION_NAME2 = "station2";
     private static final String CITY = "city";
@@ -71,9 +71,9 @@ public class StationRepositoryIntTest extends SpringTestContextInitializer {
     }
 
     @Test
-    public void findByPage() {
-        List<Station> stations = stationRepository.findByPage(1);
-        assertThat(stations, hasSize(2));
+    public void findAllOAPMStations() {
+        List<Station> stations = stationRepository.findAllOAPMStations();
+        assertThat(stations, hasSize(1));
     }
 
     private void setupStations() {

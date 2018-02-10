@@ -1,12 +1,10 @@
 package org.ngel.station.core.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.ngel.station.core.domain.model.Station;
 import org.ngel.station.core.domain.model.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class DefaultStationRepository implements StationRepository {
+
+    private static final String OAPM = "_OAPM_";
 
     @Autowired
     private SpringDataStationRepository stationRepository;
@@ -24,11 +24,8 @@ public class DefaultStationRepository implements StationRepository {
     }
 
     @Override
-    public List<Station> findByPage(int page) {
-        Iterable<Station> iterable = stationRepository.findAll(new PageRequest(page - 1, PAGE_SIZE));
-        List<Station> allStations = new ArrayList<>();
-        iterable.forEach(allStations::add);
-        return allStations;
+    public List<Station> findAllOAPMStations() {
+        return stationRepository.findByNgelIdWithOAPM(OAPM);
     }
 
     @Override
