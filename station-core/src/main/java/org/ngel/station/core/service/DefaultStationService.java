@@ -34,12 +34,8 @@ public class DefaultStationService implements StationService {
 
     @Override
     public List<StationRepresentation> getStationsWithPm25Mean() {
-        List<StationRepresentation> stationRepresentations = getStations();
-        stationRepresentations.forEach(stationRepresentation -> {
-            Double pm25Mean = stationDailyDataService.getLatestPm25Mean(stationRepresentation.getNgelId());
-            stationRepresentation.setLatestPM25Mean(pm25Mean);
-        });
-        return stationRepresentations;
+        List<Station> stations = stationRepository.findAllOAPMStationsWithLatestPm25Mean();
+        return stationTransformer.transform(stations);
     }
 
     @Override

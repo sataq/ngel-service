@@ -26,6 +26,7 @@ public class StationTransformer {
 
     private StationRepresentation transform(Station station) {
         return StationRepresentation.builder().ngelId(station.getNgelId()).name(station.getStation()).city(station.getCity())
-                    .country(station.getCountry()).latitude(station.getLatitude()).longitude(station.getLongitude()).build();
+                    .country(station.getCountry()).latitude(station.getLatitude()).longitude(station.getLongitude())
+                .latestPM25Mean(station.getPm25Mean()).build();
     }
 }

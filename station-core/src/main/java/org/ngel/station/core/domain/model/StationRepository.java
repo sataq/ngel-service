@@ -13,6 +13,8 @@ public interface StationRepository {
 
     List<Station> findAllOAPMStations();
 
+    List<Station> findAllOAPMStationsWithLatestPm25Mean();
+
     Station findByNgelId(String ngelId);
 
     Station findByStationName(String stationName);
