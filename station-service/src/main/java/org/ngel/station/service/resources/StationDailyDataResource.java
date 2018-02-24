@@ -1,12 +1,9 @@
 package org.ngel.station.service.resources;
 
-import java.util.List;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.ngel.station.common.exception.InvalidDateRangeException;
-import org.ngel.station.common.representation.StationDailyDataRepresentation;
 import org.ngel.station.common.representation.StationDailyDataRepresentationCollection;
 import org.ngel.station.core.service.StationDailyDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +33,19 @@ public class StationDailyDataResource {
     public ResponseEntity<Resource<StationDailyDataRepresentationCollection>> getStationDailyData(@PathVariable("stationId") String stationId,
                                                                                                   @RequestParam(value = "startDate", required = false) Long startDate,
                                                                                                   @RequestParam(value = "endDate", required = false) Long endDate) {
-        List<StationDailyDataRepresentation> stationDailyDataRepresentations;
+        StationDailyDataRepresentationCollection stationDailyDataRepresentations;
         if (startDate == null || endDate == null) {
             stationDailyDataRepresentations = stationDailyDataService.getStationDailyDataForLast60Days(stationId);
         } else {
             validateDateRange(startDate, endDate);
             stationDailyDataRepresentations = stationDailyDataService.getStationDailyData(stationId, new LocalDate(startDate), new LocalDate(endDate));
         }
-        if (CollectionUtils.isEmpty(stationDailyDataRepresentations)) {
+        if (stationDailyDataRepresentations == null || CollectionUtils.isEmpty(stationDailyDataRepresentations.getStationDailyData())) {
             log.warn("No daily data found for given station: {}", stationId);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(new Resource<>(new StationDailyDataRepresentationCollection(stationDailyDataRepresentations)), HttpStatus.OK);
+        return new ResponseEntity<>(new Resource<>(stationDailyDataRepresentations), HttpStatus.OK);
     }
 
     void validateDateRange(Long startDate, Long endDate) {

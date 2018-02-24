@@ -2,14 +2,14 @@ package org.ngel.station.core.persistence;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.ngel.station.core.domain.model.Station;
 import org.ngel.station.core.domain.model.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
  * @author vgarg
@@ -32,7 +32,12 @@ public class DefaultStationRepository implements StationRepository {
 
     @Override
     public List<Station> findAllOAPMStations() {
-        return stationRepository.findByNgelIdWithOAPM(OAPM);
+        TypedQuery<Station> query = em.createNamedQuery(Station.STATIONS_QUERY_NAME, Station.class);
+        try {
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @Override

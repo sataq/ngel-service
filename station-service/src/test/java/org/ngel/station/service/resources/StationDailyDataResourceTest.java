@@ -44,7 +44,7 @@ public class StationDailyDataResourceTest {
 
     @Test
     public void getStationDailyData() throws Exception {
-        when(stationDailyDataService.getStationDailyDataForLast60Days(anyString())).thenReturn(Collections.singletonList(StationDailyDataRepresentation.builder().build()));
+        when(stationDailyDataService.getStationDailyDataForLast60Days(anyString())).thenReturn(new StationDailyDataRepresentationCollection(Collections.singletonList(StationDailyDataRepresentation.builder().build()), null, null));
         StationDailyDataRepresentationCollection collection = stationDailyDataResource.getStationDailyData(NGEL_ID, null, null).getBody().getContent();
         assertThat(collection, notNullValue());
         assertThat(collection.getStationDailyData(), hasSize(1));
@@ -62,7 +62,7 @@ public class StationDailyDataResourceTest {
 
     @Test
     public void getStationDailyDataWithDates() throws Exception {
-        when(stationDailyDataService.getStationDailyData(anyString(), any(LocalDate.class), any(LocalDate.class))).thenReturn(Collections.singletonList(StationDailyDataRepresentation.builder().build()));
+        when(stationDailyDataService.getStationDailyData(anyString(), any(LocalDate.class), any(LocalDate.class))).thenReturn(new StationDailyDataRepresentationCollection(Collections.singletonList(StationDailyDataRepresentation.builder().build()), null, null));
         StationDailyDataRepresentationCollection collection = stationDailyDataResource.getStationDailyData(NGEL_ID, LocalDate.now().minusDays(2).toDate().getTime(), LocalDate.now().toDate().getTime()).getBody().getContent();
         assertThat(collection, notNullValue());
         assertThat(collection.getStationDailyData(), hasSize(1));

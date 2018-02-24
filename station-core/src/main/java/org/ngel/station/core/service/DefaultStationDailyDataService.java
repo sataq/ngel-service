@@ -8,6 +8,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.ngel.station.common.representation.StationDailyDataRepresentation;
+import org.ngel.station.common.representation.StationDailyDataRepresentationCollection;
 import org.ngel.station.core.domain.model.StationDailyData;
 import org.ngel.station.core.domain.model.StationDailyDataRepository;
 import org.ngel.station.core.persistence.SpringDataStationDailyDataRepository;
@@ -68,15 +69,19 @@ public class DefaultStationDailyDataService implements StationDailyDataService {
     }
 
     @Override
-    public List<StationDailyDataRepresentation> getStationDailyDataForLast60Days(String ngelId) {
+    public StationDailyDataRepresentationCollection getStationDailyDataForLast60Days(String ngelId) {
         List<StationDailyData> stationDailyData = stationDailyDataRepository.findLast60DaysStationData(ngelId);
-        return stationDailyDataTransformer.transform(stationDailyData);
+        List<StationDailyDataRepresentation> representations = stationDailyDataTransformer.transform(stationDailyData);
+        List<LocalDate> minAndMaxOccurred = stationDailyDataRepository.findMinAndMaxOccurred(ngelId);
+        return new StationDailyDataRepresentationCollection(representations, minAndMaxOccurred.get(0), minAndMaxOccurred.get(1));
     }
 
     @Override
-    public List<StationDailyDataRepresentation> getStationDailyData(String ngelId, LocalDate startDate, LocalDate endDate) {
+    public StationDailyDataRepresentationCollection getStationDailyData(String ngelId, LocalDate startDate, LocalDate endDate) {
         List<StationDailyData> stationDailyData = stationDailyDataRepository.findStationData(ngelId, startDate, endDate);
-        return stationDailyDataTransformer.transform(stationDailyData);
+        List<StationDailyDataRepresentation> representations = stationDailyDataTransformer.transform(stationDailyData);
+        List<LocalDate> minAndMaxOccurred = stationDailyDataRepository.findMinAndMaxOccurred(ngelId);
+        return new StationDailyDataRepresentationCollection(representations, minAndMaxOccurred.get(0), minAndMaxOccurred.get(1));
     }
 
     private Double getPm25Mean(StationDailyData stationDailyData) {

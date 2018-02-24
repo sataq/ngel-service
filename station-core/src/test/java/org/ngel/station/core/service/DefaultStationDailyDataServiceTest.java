@@ -7,6 +7,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.joda.time.LocalDate;
@@ -49,13 +50,15 @@ public class DefaultStationDailyDataServiceTest {
 
     @Test
     public void getStationDailyDataForLast60Days() throws Exception {
+        when(stationDailyDataRepository.findMinAndMaxOccurred(anyString())).thenReturn(Arrays.asList(LocalDate.now(), LocalDate.now()));
         when(stationDailyDataRepository.findLast60DaysStationData(anyString())).thenReturn(Collections.singletonList(TestConstants.getStationDailyData()));
-        assertThat(stationDailyDataService.getStationDailyDataForLast60Days(TestConstants.NGEL_ID), hasSize(1));
+        assertThat(stationDailyDataService.getStationDailyDataForLast60Days(TestConstants.NGEL_ID).getStationDailyData(), hasSize(1));
     }
 
     @Test
     public void getStationDailyData() throws Exception {
+        when(stationDailyDataRepository.findMinAndMaxOccurred(anyString())).thenReturn(Arrays.asList(LocalDate.now(), LocalDate.now()));
         when(stationDailyDataRepository.findStationData(anyString(), any(LocalDate.class), any(LocalDate.class))).thenReturn(Collections.singletonList(TestConstants.getStationDailyData()));
-        assertThat(stationDailyDataService.getStationDailyData(TestConstants.NGEL_ID, LocalDate.now().minusDays(2), LocalDate.now()), hasSize(1));
+        assertThat(stationDailyDataService.getStationDailyData(TestConstants.NGEL_ID, LocalDate.now().minusDays(2), LocalDate.now()).getStationDailyData(), hasSize(1));
     }
 }

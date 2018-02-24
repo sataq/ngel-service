@@ -1,10 +1,8 @@
 package org.ngel.station.core.service;
 
-import java.util.List;
-
 import org.apache.commons.csv.CSVRecord;
 import org.joda.time.LocalDate;
-import org.ngel.station.common.representation.StationDailyDataRepresentation;
+import org.ngel.station.common.representation.StationDailyDataRepresentationCollection;
 
 /**
  * @author vgarg
@@ -19,7 +17,7 @@ public interface StationDailyDataService {
 
     Double getPm25Mean(String ngelId, LocalDate forDate);
 
-    List<StationDailyDataRepresentation> getStationDailyDataForLast60Days(String ngelId);
+    StationDailyDataRepresentationCollection getStationDailyDataForLast60Days(String ngelId);
 
-    List<StationDailyDataRepresentation> getStationDailyData(String ngelId, LocalDate startDate, LocalDate endDate);
+    StationDailyDataRepresentationCollection getStationDailyData(String ngelId, LocalDate startDate, LocalDate endDate);
 }

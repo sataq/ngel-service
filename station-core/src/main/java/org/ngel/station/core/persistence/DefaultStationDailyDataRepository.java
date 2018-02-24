@@ -2,6 +2,8 @@ package org.ngel.station.core.persistence;
 
 import static java.util.stream.Collectors.toList;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,5 +54,17 @@ public class DefaultStationDailyDataRepository implements StationDailyDataReposi
                     .collect(toList());
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<LocalDate> findMinAndMaxOccurred(String ngelId) {
+        List<Object[]> dates = springDataStationDailyDataRepository.findMinAndMaxOccurred(ngelId);
+        return Arrays.asList(new LocalDate((Timestamp) dates.get(0)[0]), new LocalDate((Timestamp) dates.get(0)[1]));
+    }
+
+    @Override
+    public List<LocalDate> findMinAndMaxOccurred() {
+        List<Object[]> dates = springDataStationDailyDataRepository.findMinAndMaxOccurred();
+        return Arrays.asList(new LocalDate((Timestamp) dates.get(0)[0]), new LocalDate((Timestamp) dates.get(0)[1]));
     }
 }

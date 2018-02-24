@@ -3,6 +3,8 @@ package org.ngel.station.common.representation;
 import java.io.Serializable;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +20,6 @@ public class StationDailyDataRepresentationCollection implements Serializable {
     private static final long serialVersionUID = -4251643567043028429L;
 
     private final List<StationDailyDataRepresentation> stationDailyData;
+    private final LocalDate minOccurred;
+    private final LocalDate maxOccurred;
 }

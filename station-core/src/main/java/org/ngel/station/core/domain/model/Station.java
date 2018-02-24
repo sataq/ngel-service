@@ -5,10 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,16 +29,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@SqlResultSetMapping(name = "stationsWithLatestPm25Mean", entities = @EntityResult(entityClass = Station.class))
+@SqlResultSetMappings({
+        @SqlResultSetMapping(name = "stationsWithLatestPm25Mean", entities = @EntityResult(entityClass = Station.class)),
+        @SqlResultSetMapping(name = "stations", entities = @EntityResult(entityClass = Station.class))
+})
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = Station.STATIONS_WITH_LATEST_PM25_MEAN_QUERY_NAME,
-                query = Station.STATIONS_WITH_LATEST_PM25_MEAN_QUERY, resultSetMapping = "stationsWithLatestPm25Mean")
+                query = Station.STATIONS_WITH_LATEST_PM25_MEAN_QUERY, resultSetMapping = "stationsWithLatestPm25Mean"),
+        @NamedNativeQuery(name = Station.STATIONS_QUERY_NAME,
+                query = Station.STATIONS_QUERY, resultSetMapping = "stationsWithLatestPm25Mean")
 })
 public class Station {
 
     public static final String STATIONS_WITH_LATEST_PM25_MEAN_QUERY_NAME = "Station.stationsWithLatestPm25Mean";
+    public static final String STATIONS_QUERY_NAME = "Station.stations";
 
     public static final String STATIONS_WITH_LATEST_PM25_MEAN_QUERY = "SELECT st.*, sdd.pm25_mean as pm25_mean FROM station st INNER JOIN (SELECT s.ngel_id, s.pm25_mean FROM station_daily_data s WHERE (s.ngel_id, s.occurred) IN (SELECT sd.ngel_id, max(sd.occurred) FROM station_daily_data sd WHERE sd.ngel_id like '%_OAPM_%' GROUP BY sd.ngel_id)) sdd ON sdd.ngel_id=st.ngel_id";
+    public static final String STATIONS_QUERY = "SELECT st.*, null as pm25_mean FROM station st WHERE st.ngel_id like '%_OAPM_%'";
 
     @Id
     @GeneratedValue
@@ -49,4 +60,9 @@ public class Station {
 
     @Column(name = "pm25_mean")
     private Double pm25Mean;
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.JSON_STYLE);
+    }
 }

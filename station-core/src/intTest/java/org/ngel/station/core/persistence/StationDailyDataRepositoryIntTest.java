@@ -88,6 +88,12 @@ public class StationDailyDataRepositoryIntTest extends SpringTestContextInitiali
         assertThat(dailyData, hasSize(0));
     }
 
+    @Test
+    public void findMinAndMaxOccurred() {
+        List<LocalDate> minAndMaxOccurred = stationDailyDataRepository.findMinAndMaxOccurred(NGEL_ID3);
+        assertThat(minAndMaxOccurred, hasSize(2));
+    }
+
     private void setupStationDailyData() {
         List<StationDailyData> dailyDataList = new ArrayList<>();
         dailyDataList.add(StationDailyData.builder().ngelId(NGEL_ID1).pm25Mean(2.0).tau3Mean(2.0).occurred(EXPECTED_OCCURRED.minusDays(2)).build());

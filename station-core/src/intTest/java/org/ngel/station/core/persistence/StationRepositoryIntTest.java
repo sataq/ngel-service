@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.ngel.station.core.config.SpringTestContextInitializer;
 import org.ngel.station.core.domain.model.Station;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author vgarg
  */
+@Ignore
 public class StationRepositoryIntTest extends SpringTestContextInitializer {
 
     private static final String NGEL_ID1 = "ngel_OAPM_Id1";

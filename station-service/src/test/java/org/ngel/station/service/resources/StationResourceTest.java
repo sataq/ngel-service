@@ -40,7 +40,7 @@ public class StationResourceTest {
 
     @Test
     public void getAllStations() throws Exception {
-        when(stationService.getStationsWithPm25Mean()).thenReturn(Collections.singletonList(StationRepresentation.builder().build()));
+        when(stationService.getStationsWithPm25Mean()).thenReturn(new StationRepresentationCollection(Collections.singletonList(StationRepresentation.builder().build()), null, null));
         StationRepresentationCollection collection = stationResource.getAllStations(null).getBody().getContent();
         assertThat(collection, notNullValue());
         assertThat(collection.getStations(), hasSize(1));
@@ -48,7 +48,7 @@ public class StationResourceTest {
 
     @Test(expected = InvalidDateException.class)
     public void getAllStationsInvalidDate() throws Exception {
-        when(stationService.getStationsWithPm25Mean()).thenReturn(Collections.singletonList(StationRepresentation.builder().build()));
+        when(stationService.getStationsWithPm25Mean()).thenReturn(new StationRepresentationCollection(Collections.singletonList(StationRepresentation.builder().build()), null, null));
         stationResource.getAllStations(LocalDate.now().plusDays(1).toDate().getTime()).getBody().getContent();
     }
 

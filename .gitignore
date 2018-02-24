@@ -4,3 +4,4 @@ out
 .gradle
 *.iml
 build
+station-service/src/main/resources/static

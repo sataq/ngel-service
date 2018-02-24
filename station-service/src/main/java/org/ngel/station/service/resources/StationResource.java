@@ -1,11 +1,8 @@
 package org.ngel.station.service.resources;
 
-import java.util.List;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.LocalDate;
 import org.ngel.station.common.exception.InvalidDateException;
-import org.ngel.station.common.representation.StationRepresentation;
 import org.ngel.station.common.representation.StationRepresentationCollection;
 import org.ngel.station.core.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +29,17 @@ public class StationResource {
 
     @GetMapping
     public ResponseEntity<Resource<StationRepresentationCollection>> getAllStations(@RequestParam(value = "occurred", required = false) Long date) {
-        List<StationRepresentation> stationRepresentations;
+        StationRepresentationCollection stationRepresentations;
         if (date == null) {
             stationRepresentations = stationService.getStationsWithPm25Mean();
         } else {
             validateDate(date);
             stationRepresentations = stationService.getStationsWithPm25Mean(new LocalDate(date));
         }
-        if (CollectionUtils.isEmpty(stationRepresentations)) {
+        if (stationRepresentations == null || CollectionUtils.isEmpty(stationRepresentations.getStations())) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new Resource<>(new StationRepresentationCollection(stationRepresentations)), HttpStatus.OK);
+        return new ResponseEntity<>(new Resource<>(stationRepresentations), HttpStatus.OK);
     }
 
     private void validateDate(Long date) {

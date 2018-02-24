@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.commons.csv.CSVRecord;
 import org.joda.time.LocalDate;
 import org.ngel.station.common.representation.StationRepresentation;
+import org.ngel.station.common.representation.StationRepresentationCollection;
 import org.ngel.station.core.domain.model.Station;
+import org.ngel.station.core.domain.model.StationDailyDataRepository;
 import org.ngel.station.core.domain.model.StationRepository;
 import org.ngel.station.core.transformers.StationTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class DefaultStationService implements StationService {
     @Autowired
     private StationTransformer stationTransformer;
 
+    @Autowired
+    private StationDailyDataRepository stationDailyDataRepository;
+
     @Override
     public List<StationRepresentation> getStations() {
         List<Station> stations = stationRepository.findAllOAPMStations();
@@ -33,19 +38,22 @@ public class DefaultStationService implements StationService {
     }
 
     @Override
-    public List<StationRepresentation> getStationsWithPm25Mean() {
+    public StationRepresentationCollection getStationsWithPm25Mean() {
         List<Station> stations = stationRepository.findAllOAPMStationsWithLatestPm25Mean();
-        return stationTransformer.transform(stations);
+        List<StationRepresentation> stationRepresentations = stationTransformer.transform(stations);
+        List<LocalDate> minAndMaxOccurred = stationDailyDataRepository.findMinAndMaxOccurred();
+        return new StationRepresentationCollection(stationRepresentations, minAndMaxOccurred.get(0), minAndMaxOccurred.get(1));
     }
 
     @Override
-    public List<StationRepresentation> getStationsWithPm25Mean(LocalDate occurred) {
+    public StationRepresentationCollection getStationsWithPm25Mean(LocalDate occurred) {
         List<StationRepresentation> stationRepresentations = getStations();
         stationRepresentations.forEach(stationRepresentation -> {
             Double pm25Mean = stationDailyDataService.getPm25Mean(stationRepresentation.getNgelId(), occurred);
             stationRepresentation.setLatestPM25Mean(pm25Mean);
         });
-        return stationRepresentations;
+        List<LocalDate> minAndMaxOccurred = stationDailyDataRepository.findMinAndMaxOccurred();
+        return new StationRepresentationCollection(stationRepresentations, minAndMaxOccurred.get(0), minAndMaxOccurred.get(1));
     }
 
 

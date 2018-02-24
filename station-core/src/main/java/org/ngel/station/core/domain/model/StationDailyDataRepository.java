@@ -16,4 +16,8 @@ public interface StationDailyDataRepository {
     List<StationDailyData> findLast60DaysStationData(String ngelId);
 
     List<StationDailyData> findStationData(String ngelId, LocalDate startDate, LocalDate endDate);
+
+    List<LocalDate> findMinAndMaxOccurred(String ngelId);
+
+    List<LocalDate> findMinAndMaxOccurred();
 }
